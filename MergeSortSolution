@@ -1,0 +1,100 @@
+class Solution {
+     public static void Merge(int[] arr, int left, int right, int middle){
+        int llen = middle-left+1;
+        int rlen = right-middle;
+        int len = right-left+1;
+        int[] ans = new int[len];
+        int i=left;
+        int j=middle+1;
+        int k=0;
+        while(i<=middle && j<=right){
+            if(arr[i] <= arr[j]){
+                ans[k] = arr[i];
+                i++;
+                k++;
+            }
+            else{
+                ans[k] = arr[j];
+                j++;
+                k++;
+            }
+        }
+        if(i<=middle){
+            while(i<=middle){
+                ans[k] = arr[i];
+                i++;
+                k++;
+            }
+        }
+        if(j<=right){
+            while(j<=right){
+                ans[k] = arr[j];
+                j++;
+                k++;
+            }
+        }
+        for(int p=0;p<len;p++){
+            arr[p+left] = ans[p];
+        }
+    }
+    
+       
+    public static void MergeSort(int[] arr, int left, int right){
+        if(left != right){
+            int middle = (left+right)/2;
+            MergeSort(arr, left, middle);
+            MergeSort(arr, middle+1, right);
+            Merge(arr, left, right, middle);
+            return;
+        }else{
+            return;
+        }
+    }
+    
+    public void nextPermutation(int[] nums) {
+        int len = nums.length;
+        int[] ans = new int[len];
+        int flag = 0;
+        if(len == 1){
+            return;
+        }else{
+            int i = len-2;
+            while(i >= 0){
+                if(nums[i] >= nums[i+1]){
+                    i--;
+                }else{
+                    flag = i;
+                    break;
+                }
+            }
+            if(i == -1){
+                for(int j=0; j<len; j++){
+                    ans[j] = nums[len-1-j];
+                }
+                for(int j=0; j<len; j++){
+                    nums[j] = ans[j];
+                }
+                return;
+            }else{
+                int last = len - (flag + 1);
+                int[] arr = new int[last];
+                for(int k=0; k<last; k++){
+                    arr[k] = nums[flag+1+k];
+                }
+                MergeSort(arr, 0, last-1);
+                for(int k=0; k<last; k++){
+                    nums[flag+1+k] = arr[k];
+                }
+                for(int k=0; k<last; k++){
+                    if(nums[flag+1+k]>nums[flag]){
+                        int temp = nums[flag];
+                        nums[flag] = nums[flag+1+k];
+                        nums[flag+1+k] = temp;
+                        break;
+                    }
+                }
+                return;
+            }
+        }
+    }
+}
